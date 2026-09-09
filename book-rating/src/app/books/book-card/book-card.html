@@ -10,5 +10,8 @@
     </header>
     <p>{{ book().description }}</p>
     <p><strong>Preis:</strong> {{ book().price }}</p>
+
+    <button type="button" class="btn btn-green" (click)="doRateUp()"> + </button>
+    <button type="button" class="btn btn-red" (click)="doRateDown()"> – </button>
   </div>
 </article>

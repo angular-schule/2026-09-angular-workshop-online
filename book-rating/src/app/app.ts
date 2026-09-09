@@ -9,5 +9,5 @@ import { DashboardPage } from "./books/dashboard-page/dashboard-page";
   templateUrl: './app.html',
 })
 export class App {
-  protected readonly title = signal('book-rating');
+  protected readonly title = signal('Book Rating');
 }

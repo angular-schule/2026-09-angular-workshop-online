@@ -13,6 +13,8 @@ export class BookCard {
   // Input: hier fließen Daten von der Elternkomponente hinein
   // von oben nach unten
   readonly book = input.required<Book>();
+  readonly minRating = input(0);
+  readonly maxRating = input(10);
 
   // Output: hier fließen zur Elternkomponente hinaus
   // von unten nach oben

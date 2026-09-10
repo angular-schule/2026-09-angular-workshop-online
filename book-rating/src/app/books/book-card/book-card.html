@@ -9,7 +9,9 @@
     <p>{{ book().description }}</p>
     <p><strong>Preis:</strong> {{ book().price | currency:'EUR' }}</p>
 
-    <button type="button" class="btn btn-green" (click)="doRateUp()"> + </button>
-    <button type="button" class="btn btn-red" (click)="doRateDown()"> – </button>
+    <button type="button" class="btn btn-green"
+      [disabled]="book().rating >= maxRating()" (click)="doRateUp()"> + </button>
+    <button type="button" class="btn btn-red"
+      [disabled]="book().rating <= minRating()" (click)="doRateDown()"> – </button>
   </div>
 </article>

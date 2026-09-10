@@ -53,4 +53,63 @@ describe('BookRatingHelper', () => {
     const ratedBook = service.rateDown(book);
     expect(ratedBook.rating).toBe(1);
   });
+
+
+
+  it('should not change the original book when rating up', () => {
+    book.rating = 3;
+    service.rateUp(book);
+    expect(book.rating).toBe(3);
+  });
+
+  it('should not change the original book when rating down', () => {
+    book.rating = 3;
+    service.rateDown(book);
+    expect(book.rating).toBe(3);
+  });
+
+  it('should return a new object when rating up', () => {
+    book.rating = 3;
+    const ratedBook = service.rateUp(book);
+    expect(ratedBook).not.toBe(book);
+  });
+
+  it('should return a new object when rating down', () => {
+    book.rating = 3;
+    const ratedBook = service.rateDown(book);
+    expect(ratedBook).not.toBe(book);
+  });
+
+  it('should keep all other properties when rating up', () => {
+    // ARRANGE
+    book = {
+      isbn: '123',
+      title: 'Angular',
+      description: 'Das große Buch',
+      authors: ['Ferdinand', 'Johannes', 'Danny'],
+      price: 42,
+      rating: 3
+    };
+
+    // ACT
+    const ratedBook = service.rateUp(book);
+
+    // ASSERT
+    expect(ratedBook).toEqual({ ...book, rating: 4 });
+  });
+
+  it('should keep all other properties when rating down', () => {
+    book = {
+      isbn: '123',
+      title: 'Angular',
+      description: 'Das große Buch',
+      authors: ['Ferdinand', 'Johannes', 'Danny'],
+      price: 42,
+      rating: 3
+    };
+
+    const ratedBook = service.rateDown(book);
+
+    expect(ratedBook).toEqual({ ...book, rating: 2 });
+  });
 });

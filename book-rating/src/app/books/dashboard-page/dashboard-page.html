@@ -1,3 +1,5 @@
+<p><strong>Anzahl Bücher:</strong> {{ books().length }}</p>
+
 @for (b of books(); track b.isbn) {
     <app-book-card
         [book]="b"

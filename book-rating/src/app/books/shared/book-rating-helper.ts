@@ -3,6 +3,7 @@ import { Book } from './book';
 
 @Service()
 export class BookRatingHelper {
+
     rateUp(book: Book): Book {
         return book; // TODO
     }
@@ -10,4 +11,5 @@ export class BookRatingHelper {
     rateDown(book: Book): Book {
         return book; // TODO
     }
+    
 }

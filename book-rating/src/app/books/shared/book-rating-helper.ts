@@ -5,11 +5,22 @@ import { Book } from './book';
 export class BookRatingHelper {
 
     rateUp(book: Book): Book {
-        return book; // TODO
+        return {
+            ...book,
+            rating: Math.min(5, book.rating + 1)
+        };
     }
 
     rateDown(book: Book): Book {
-        return book; // TODO
+        // Early Exit / Early Return
+        if (book.rating <= 1) {
+            return book;
+        }
+
+        return {
+            ...book,
+            rating: book.rating - 1
+        }
     }
     
 }

@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Book } from '../shared/book';
 import { BookCard } from "../book-card/book-card";
+import { BookRatingHelper } from '../shared/book-rating-helper';
 
 @Component({
   imports: [BookCard],
@@ -10,6 +11,8 @@ import { BookCard } from "../book-card/book-card";
 })
 export class DashboardPage {
   protected readonly books = signal<Book[]>([]);
+
+  #ratingHelper = inject(BookRatingHelper);
 
   constructor() {
     this.books.set([
@@ -65,10 +68,27 @@ export class DashboardPage {
   }
 
   doRateUp(book: Book) {
-    console.log('UP', book);
+    const ratedBook = this.#ratingHelper.rateUp(book);
+    this.#updateList(ratedBook);
+  }
+  
+  doRateDown(book: Book) {
+    const ratedBook = this.#ratingHelper.rateDown(book);
+    this.#updateList(ratedBook);
   }
 
-  doRateDown(book: Book) {
-    console.log('DOWN', book);
+  #updateList(ratedBook: Book) {
+    // [1,2,3,4,5,6].map(e => e * 10) // [10, 20, 30, 40, 50, 60]
+    // [1,2,3,4,5,6,7,8,9].filter(e => e > 5) // [6, 7, 8, 9]
+
+    this.books.update(currentList => {
+      return currentList.map(b => {
+        if (b.isbn === ratedBook.isbn) {
+          return ratedBook;
+        } else {
+          return b
+        }
+      });
+    });
   }
 }

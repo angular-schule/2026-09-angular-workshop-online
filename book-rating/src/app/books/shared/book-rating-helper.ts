@@ -21,6 +21,5 @@ export class BookRatingHelper {
             ...book,
             rating: book.rating - 1
         }
-    }
-    
+    }    
 }

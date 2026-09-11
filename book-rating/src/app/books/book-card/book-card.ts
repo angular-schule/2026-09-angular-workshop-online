@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { Book } from '../shared/book';
 import { CurrencyPipe } from '@angular/common';
 import { RatingDisplay } from "../rating-display/rating-display";
@@ -15,6 +15,9 @@ export class BookCard {
   readonly book = input.required<Book>();
   readonly minRating = input(0);
   readonly maxRating = input(10);
+
+  protected readonly rateUpDisabled = computed(() => this.book().rating >= this.maxRating());
+  protected readonly rateDownDisabled = computed(() => this.book().rating <= this.minRating());
 
   // Output: hier fließen zur Elternkomponente hinaus
   // von unten nach oben

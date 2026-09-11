@@ -1,11 +1,22 @@
-<p><strong>Anzahl Bücher:</strong> {{ books().length }}</p>
+<button type="button" class="btn btn-green" (click)="books.reload()">Reload</button>
 
-@for (b of books(); track b.isbn) {
-    <app-book-card
-        [book]="b"
-        [minRating]="1"
-        [maxRating]="5"
-        (rateUp)="doRateUp($event)"
-        (rateDown)="doRateDown($event)" />
+<p>Status: {{ books.status() }}</p>
+
+@if (books.isLoading()) {
+    <p aria-busy="true">Wird geladen …</p>
 }
 
+<div [aria-busy]="books.isLoading()">
+    @if (books.hasValue()) {
+        <p><strong>Anzahl Bücher:</strong> {{ books.value().length }}</p>
+
+        @for (b of books.value(); track b.isbn) {
+            <app-book-card
+                [book]="b"
+                [minRating]="1"
+                [maxRating]="5"
+                (rateUp)="doRateUp($event)"
+                (rateDown)="doRateDown($event)" />
+        }
+    }
+</div>

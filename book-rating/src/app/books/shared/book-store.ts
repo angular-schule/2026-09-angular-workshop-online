@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, httpResource } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { Book } from './book';
 
@@ -9,6 +9,13 @@ export class BookStore {
 
     getAll() {
         return this.#http.get<Book[]>(this.#apiBaseUrl + '/books');
+    }
+
+    getAllResource() {
+        return httpResource<Book[]>(
+            () => this.#apiBaseUrl + '/books',
+            { defaultValue: [] }
+        );
     }
 
     create(book: Book) {

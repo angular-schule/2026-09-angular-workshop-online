@@ -15,14 +15,8 @@ export class DashboardPage {
   #store = inject(BookStore);
   #ratingHelper = inject(BookRatingHelper);
   
-  protected readonly books = signal<Book[]>([]);
-
-  constructor() {
-    this.#store.getAll().subscribe(receivedBooks => {
-      this.books.set(receivedBooks);
-    });
-  }
-
+  protected readonly books = this.#store.getAllResource();
+  
   doRateUp(book: Book) {
     const ratedBook = this.#ratingHelper.rateUp(book);
     this.#updateList(ratedBook);
@@ -37,7 +31,7 @@ export class DashboardPage {
     // [1,2,3,4,5,6].map(e => e * 10) // [10, 20, 30, 40, 50, 60]
     // [1,2,3,4,5,6,7,8,9].filter(e => e > 5) // [6, 7, 8, 9]
 
-    this.books.update(currentList => {
+    this.books.value.update(currentList => {
       return currentList.map(b => {
         if (b.isbn === ratedBook.isbn) {
           return ratedBook;

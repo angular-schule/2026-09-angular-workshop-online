@@ -14,6 +14,11 @@
     <button type="button" class="btn btn-red"
       [disabled]="rateDownDisabled()" (click)="doRateDown()"> – </button>
 
+    <button type="button" class="btn btn-yellow" (click)="doDelete()">
+      <span aria-hidden="true">🗑️</span>
+      Löschen
+    </button>
+
     <a [routerLink]="['/books', book().isbn]">Details</a>
     <!--<a routerLink="/books">Dashboard</a>
     

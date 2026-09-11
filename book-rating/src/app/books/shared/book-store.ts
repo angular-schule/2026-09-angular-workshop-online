@@ -31,4 +31,8 @@ export class BookStore {
     search(term: string) {
         return this.#http.get<Book[]>(`${this.#apiBaseUrl}/books/search/${term}`);
     }
+
+    delete(isbn: string) {
+        return this.#http.delete<unknown>(`${this.#apiBaseUrl}/books/${isbn}`);
+    }
 }

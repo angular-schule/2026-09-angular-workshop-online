@@ -1,5 +1,5 @@
 import { HttpClient, httpResource } from '@angular/common/http';
-import { inject, Service } from '@angular/core';
+import { inject, Service, Signal } from '@angular/core';
 import { Book } from './book';
 
 @Service()
@@ -15,6 +15,12 @@ export class BookStore {
         return httpResource<Book[]>(
             () => this.#apiBaseUrl + '/books',
             { defaultValue: [] }
+        );
+    }
+
+    getSingle(isbn: () => string) {
+        return httpResource<Book>(
+            () => `https://api.angular.schule/books/${isbn()}`
         );
     }
 

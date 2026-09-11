@@ -1,4 +1,7 @@
-<p>book-details-page works!</p>
+@if (book.hasValue()) {
+    <h2>{{ book.value().title }}</h2>
+    <p>{{ book.value().description }}</p>
+}
 
 <hr>
 

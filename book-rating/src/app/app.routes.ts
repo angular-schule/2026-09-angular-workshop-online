@@ -8,12 +8,3 @@ export const routes: Routes = [
     ...booksRoutes,
     { path: '**', component: ErrorPage, title: 'Fehler' }
 ];
-
-
-/* TODO:
-- Root-URL: Weiterleitung zum Dashboard
-- Links
-    - Karte => Detailseite
-    - Detailseite => Liste
-- Detailseite
-*/

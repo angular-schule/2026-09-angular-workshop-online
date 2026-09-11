@@ -13,5 +13,18 @@
       [disabled]="rateUpDisabled()" (click)="doRateUp()"> + </button>
     <button type="button" class="btn btn-red"
       [disabled]="rateDownDisabled()" (click)="doRateDown()"> – </button>
+
+    <a [routerLink]="['/books', book().isbn]">Details</a>
+    <!--<a routerLink="/books">Dashboard</a>
+    
+    <a [routerLink]="[book().isbn]">Details</a>
+    <a [routerLink]="['.', book().isbn]">Details</a>
+    <a [routerLink]="['..', 'books', book().isbn]">Details</a>
+    <a [routerLink]="book().isbn">Details</a>
+
+
+    <a [routerLink]="`/books/${book().isbn}`">Details</a>
+    <a [routerLink]="'/books/' + book().isbn">Details</a>
+    <a routerLink="/books/{{ book().isbn }}">Details</a>-->
   </div>
 </article>

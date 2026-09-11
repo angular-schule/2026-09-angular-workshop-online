@@ -1,9 +1,8 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { DashboardPage } from "./books/dashboard-page/dashboard-page";
 
 @Component({
-  imports: [RouterOutlet, DashboardPage],
+  imports: [RouterOutlet],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',

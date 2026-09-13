@@ -1,0 +1,7 @@
+<rxw-history-window [logStream]="logStream$" class="mt-3" />
+
+<ul class="mt-4">
+  <li>Öffne die Browser-Console: Dort siehst Du den Output eines Observables, das jede Sekunde einen Wert generiert.</li>
+  <li>Navigiere zurück auf die Startseite und beobachte die Console: Die Subscription läuft weiter. Wir haben einen klassischen Memory Leak erzeugt ...</li>
+  <li>Sorge dafür, dass die Subscription in <code>DestroyRef</code> beendet wird! Das Callback wird beim Beenden der Komponente ausgelöst (beim Wegnavigieren).</li>
+</ul>

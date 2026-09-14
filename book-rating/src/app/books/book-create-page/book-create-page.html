@@ -3,6 +3,14 @@
         <label for="isbnInput">ISBN</label>
         <input type="text" id="isbnInput" class="form-control"
             [formField]="bookForm.isbn">
+
+        @if (bookForm.isbn().touched() && bookForm.isbn().invalid()) {
+            <ul class="feedback-error">
+                @for (err of bookForm.isbn().errors(); track err.kind) {
+                    <li>{{ err.message }}</li>
+                }
+            </ul>
+        }
     </div>
 
     <div class="form-group">

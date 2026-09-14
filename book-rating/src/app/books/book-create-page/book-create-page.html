@@ -2,8 +2,7 @@
     <div class="form-group">
         <label for="isbnInput">ISBN</label>
         <input type="text" id="isbnInput" class="form-control"
-            [formField]="bookForm.isbn"
-            [class.invalid]="bookForm.isbn().touched() && bookForm.isbn().invalid()">
+            [formField]="bookForm.isbn">
     </div>
 
     <div class="form-group">

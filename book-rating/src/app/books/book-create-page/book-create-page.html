@@ -2,10 +2,12 @@
     <div class="form-group">
         <label for="isbnInput">ISBN</label>
         <input type="text" id="isbnInput" class="form-control"
-            [formField]="bookForm.isbn">
+            [formField]="bookForm.isbn"
+            [aria-invalid]="bookForm.isbn().touched() ? bookForm.isbn().invalid() : null"
+            [aria-errormessage]="bookForm.isbn().touched() && bookForm.isbn().invalid() ? 'isbnErrors' : null">
 
         @if (bookForm.isbn().touched() && bookForm.isbn().invalid()) {
-            <ul class="feedback-error">
+            <ul class="feedback-error" id="isbnErrors">
                 @for (err of bookForm.isbn().errors(); track err.kind) {
                     <li>{{ err.message }}</li>
                 }

@@ -1,28 +1,32 @@
 <form>
     <div class="form-group">
         <label for="isbnInput">ISBN</label>
-        <input type="text" id="isbnInput" class="form-control">
+        <input type="text" id="isbnInput" class="form-control"
+            [formField]="bookForm.isbn"
+            [class.invalid]="bookForm.isbn().touched() && bookForm.isbn().invalid()">
     </div>
 
     <div class="form-group">
         <label for="titleInput">Titel</label>
-        <input type="text" id="titleInput" class="form-control">
+        <input type="text" id="titleInput" class="form-control" [formField]="bookForm.title">
     </div>
 
     <div class="form-group">
         <label for="descInput">Beschreibung</label>
-        <textarea id="descInput" class="form-control"></textarea>
+        <textarea id="descInput" class="form-control" [formField]="bookForm.description"></textarea>
     </div>
 
     <div class="form-group">
         <label for="priceInput">Preis</label>
-        <input type="number" id="priceInput" class="form-control">
+        <input type="number" id="priceInput" class="form-control" [formField]="bookForm.price">
     </div>
 
     <div class="form-group">
         <label for="ratingInput">Bewertung</label>
-        <input type="number" id="ratingInput" class="form-control">
+        <input type="number" id="ratingInput" class="form-control" [formField]="bookForm.rating">
     </div>
 
     <button type="submit" class="btn btn-green">Abschicken</button>
 </form>
+
+<pre>{{ bookFormData() | json }}</pre>

@@ -1,12 +1,13 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { Book } from '../shared/book';
 import { BookCard } from "../book-card/book-card";
 import { BookRatingHelper } from '../shared/book-rating-helper';
 import { BookStore } from '../shared/book-store';
 import { HttpErrorResponse } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 
 @Component({
-  imports: [BookCard],
+  imports: [BookCard, DatePipe],
   selector: 'app-dashboard-page',
   styleUrl: './dashboard-page.scss',
   templateUrl: './dashboard-page.html',
@@ -14,9 +15,16 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class DashboardPage {
   #store = inject(BookStore);
   #ratingHelper = inject(BookRatingHelper);
-  
+
   protected readonly books = this.#store.getAllResource();
-  
+
+  protected readonly currentTimestamp = signal(Date.now());
+
+  constructor() {
+    const interval = setInterval(() => this.currentTimestamp.set(Date.now()), 1000);
+    inject(DestroyRef).onDestroy(() => clearInterval(interval));
+  }
+
   doRateUp(book: Book) {
     const ratedBook = this.#ratingHelper.rateUp(book);
     this.#updateList(ratedBook);

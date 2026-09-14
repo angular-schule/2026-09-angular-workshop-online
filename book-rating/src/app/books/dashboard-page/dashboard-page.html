@@ -1,5 +1,7 @@
 <button type="button" class="btn btn-green" (click)="books.reload()">Reload</button>
 
+<p>{{ currentTimestamp() | date:'medium' }}</p>
+
 <p>Status: {{ books.status() }}</p>
 
 @if (books.isLoading()) {

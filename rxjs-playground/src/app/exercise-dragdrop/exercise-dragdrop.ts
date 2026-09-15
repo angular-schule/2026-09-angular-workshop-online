@@ -33,6 +33,7 @@ export class ExerciseDragdrop {
 
     /******************************/
 
+    // this.mouseMove$.subscribe(e => this.setTargetPosition(e))
     
     /******************************/
   }

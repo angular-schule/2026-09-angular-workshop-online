@@ -1,5 +1,5 @@
-import { Component, DestroyRef } from '@angular/core';
-import { Subject, ReplaySubject, timer, Subscription, takeWhile, takeUntil } from 'rxjs';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { Subject, ReplaySubject, timer, Subscription, takeWhile, takeUntil, Observable } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { HistoryWindow } from '../shared/history-window/history-window';
@@ -20,21 +20,26 @@ export class ExerciseUnsubscribe {
    * Sorge dafür, dass die Subscription beendet wird, sobald die Komponente zerstört wird!
    * 
    */
+  #dref = inject(DestroyRef);
+
   constructor() {
     const interval$ = timer(0, 1000);
 
+
+    /*const destroy$ = new Observable<void>(sub => {
+      this.#dref.onDestroy(() => sub.next())
+    });*/
+
     interval$.pipe(
-
-      /******************************/
-
-      
-      /******************************/
-
+      takeUntilDestroyed() // im Injection Context
+      // takeUntilDestroyed(this.#dref) // außerhalb des Injection Contexts
     ).subscribe({
       next: e => this.log(e),
       error: err => this.log('❌ ERROR: ' + err),
       complete: () => this.log('✅ COMPLETE')
     });
+
+    // inject(DestroyRef).onDestroy(() => sub.unsubscribe());
   }
 
   log(msg: unknown) {

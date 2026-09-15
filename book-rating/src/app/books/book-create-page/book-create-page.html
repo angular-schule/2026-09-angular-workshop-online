@@ -1,4 +1,4 @@
-<form>
+<form [formRoot]="bookForm">
     <div class="form-group">
         <label for="isbnInput">ISBN</label>
         @let isbnInvalid = bookForm.isbn().touched() && bookForm.isbn().invalid();

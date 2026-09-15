@@ -1,7 +1,11 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Book } from '../shared/book';
 import { form, FormField, FormRoot, max, maxLength, min, minLength, pattern, provideSignalFormsConfig, required } from '@angular/forms/signals';
 import { JsonPipe } from '@angular/common';
+import { BookStore } from '../shared/book-store';
+import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   imports: [FormField, JsonPipe, FormRoot],
@@ -15,6 +19,9 @@ import { JsonPipe } from '@angular/common';
   ]
 })
 export class BookCreatePage {
+  #store = inject(BookStore);
+  #router = inject(Router);
+
   // Data Model
   protected readonly bookFormData = signal<Book>({
     isbn: '',
@@ -41,6 +48,50 @@ export class BookCreatePage {
       required(path.rating, { message: 'Bewertung muss angegeben werden.' });
       min(path.rating, 1, { message: 'Bewertung muss zwischen 1 und 5 liegen.' });
       max(path.rating, 5, { message: 'Bewertung muss zwischen 1 und 5 liegen.' });
+    },
+    {
+      submission: {
+        // wird nur ausgeführt, wenn Formular gültig ist
+        // wenn nicht, werden alle Felder als touched markiert
+        action: async (f) => {
+          console.log('Submission Action');
+          const newBook = f().value();
+          
+            try {
+              await firstValueFrom(this.#store.create(newBook));
+              await this.#router.navigate(['/books', newBook.isbn]);
+            } catch (e: unknown) {
+              // AUSBLICK: Server Errors
+              if (e instanceof HttpErrorResponse) {}
+              return [
+                {
+                  kind: 'isbnExists',
+                  message: 'Die ISBN ist schon vergeben.',
+                  fieldTree: f.isbn
+                }
+              ];
+            }
+          // this.#router.navigateByUrl('/books/' + newBook.isbn);
+
+          return [];
+        }
+      }
     }
   );
 }
+
+
+/*
+TODO
+- absenden
+  - nur, wenn Formular gültig ist ✅
+  - wenn nein:
+    - Variante 1: Submit-Button deaktivieren (⚠️)
+    - Variante 2: fehlerhafte Felder hervorheben ✅
+  - wenn ja:
+    - Daten auslesen (und zu "Book" transformieren)
+    - HTTP BookStore.create()
+    - bei Erfolg: Weiterleitung zur Detailseite
+    - bei Misserfolg: fehlerhafte Felder hervorheben
+
+*/

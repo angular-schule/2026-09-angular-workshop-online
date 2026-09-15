@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { timer } from 'rxjs';
 
 @Component({
   imports: [],
@@ -6,4 +7,13 @@ import { Component } from '@angular/core';
   styleUrl: './home-page.scss',
   templateUrl: './home-page.html',
 })
-export class HomePage {}
+export class HomePage {
+  protected readonly currentDate = signal<Date>(new Date());
+  #x = timer(0, 1000).subscribe(() => {
+    this.currentDate.set(new Date());
+  });
+
+  ngOnDestroy() {
+    this.#x.unsubscribe();
+  }
+}

@@ -19,18 +19,19 @@ export class ExerciseHigherorder {
 
     /**
      * Löse für jedes Tier-Event im source$-Stream ein Echo aus.
-     * Die Methode `this.es.echo()` gibt ein Observable zurück, das Echos produziert.
+     * Die Methode `this.#es.echo()` gibt ein Observable zurück, das Echos produziert.
      * Probiere aus, wie sich concatMap, mergeMap, switchMap und exhaustMap unterschiedlich verhalten.
      *
      * Quelle: this.source$
      * Ziel:   this.result$
-     * Echo:   this.es.echo(message)
+     * Echo:   this.#es.echo(message)
      */
 
     /**************!!**************/
 
     this.result$ = this.source$.pipe(
-      // map(tier => this.#es.echo(tier))
+      // mergeMap = map + mergeAll
+      exhaustMap(tier => this.#es.echo(tier))
     );
 
     /**************!!**************/

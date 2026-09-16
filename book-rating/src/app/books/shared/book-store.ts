@@ -24,6 +24,10 @@ export class BookStore {
         );
     }
 
+    getSingle2(isbn: string) {
+        return this.#http.get<Book>(this.#apiBaseUrl + '/books/' + isbn);
+    }
+
     create(book: Book) {
         return this.#http.post<Book>(this.#apiBaseUrl + '/books', book);
     }

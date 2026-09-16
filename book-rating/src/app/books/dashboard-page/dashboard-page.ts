@@ -24,7 +24,7 @@ export class DashboardPage {
     // ---0---1---2---3---4 ...
     interval(1000).pipe(
       map(() => Date.now()),
-      tap(e => console.log(e))
+      // tap(e => console.log(e))
     ),
     { initialValue: Date.now() }
   );

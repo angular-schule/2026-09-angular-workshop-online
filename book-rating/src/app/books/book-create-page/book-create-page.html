@@ -36,6 +36,14 @@
         <input type="number" id="ratingInput" class="form-control" [formField]="bookForm.rating">
     </div>
 
+    <fieldset>
+        <legend>Autoren</legend>
+        <button type="button" class="btn btn-yellow" (click)="addAuthorField()">+ Autor</button>
+        @for (authorField of bookForm.authors; track authorField) {
+            <input type="text" class="form-control" [formField]="authorField">
+        }
+    </fieldset>
+
     <button type="submit" class="btn btn-green">Abschicken</button>
 </form>
 

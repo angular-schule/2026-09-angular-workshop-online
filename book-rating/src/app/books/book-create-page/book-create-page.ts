@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { Book } from '../shared/book';
-import { form, FormField, FormRoot, max, maxLength, min, minLength, pattern, provideSignalFormsConfig, required } from '@angular/forms/signals';
+import { applyEach, form, FormField, FormRoot, max, maxLength, min, minLength, pattern, provideSignalFormsConfig, required } from '@angular/forms/signals';
 import { JsonPipe } from '@angular/common';
 import { BookStore } from '../shared/book-store';
 import { Router } from '@angular/router';
@@ -29,7 +29,7 @@ export class BookCreatePage {
     description: '',
     rating: 1,
     price: 0,
-    authors: []
+    authors: ['', '']
   });
 
   // Form Model
@@ -48,6 +48,11 @@ export class BookCreatePage {
       required(path.rating, { message: 'Bewertung muss angegeben werden.' });
       min(path.rating, 1, { message: 'Bewertung muss zwischen 1 und 5 liegen.' });
       max(path.rating, 5, { message: 'Bewertung muss zwischen 1 und 5 liegen.' });
+
+      applyEach(path.authors, authorPath => {
+        required(authorPath);
+        maxLength(authorPath, 32);
+      });
     },
     {
       submission: {
@@ -56,6 +61,7 @@ export class BookCreatePage {
         action: async (f) => {
           console.log('Submission Action');
           const newBook = f().value();
+          // TODO: leere Autorenwerte rausfiltern
           
             try {
               await firstValueFrom(this.#store.create(newBook));
@@ -78,6 +84,10 @@ export class BookCreatePage {
       }
     }
   );
+
+  addAuthorField() {
+    this.bookForm.authors().value.update(currentAuthors => [...currentAuthors, '']);
+  }
 }
 
 

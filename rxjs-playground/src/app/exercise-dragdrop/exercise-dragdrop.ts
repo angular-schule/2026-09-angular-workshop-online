@@ -1,6 +1,6 @@
 import { Component, ElementRef, signal, viewChild } from '@angular/core';
-import { toObservable } from '@angular/core/rxjs-interop';
-import { fromEvent, concatMap, first } from 'rxjs';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { fromEvent, concatMap, takeUntil, first } from 'rxjs';
 
 @Component({
   templateUrl: './exercise-dragdrop.html',
@@ -34,7 +34,13 @@ export class ExerciseDragdrop {
     /******************************/
 
     // this.mouseMove$.subscribe(e => this.setTargetPosition(e))
-    
+
+    this.mouseDown$.pipe(
+      concatMap(() => this.mouseMove$.pipe(takeUntil(this.mouseUp$))),
+      takeUntilDestroyed()
+    ).subscribe(e => this.setTargetPosition(e))
+
+
     /******************************/
   }
 

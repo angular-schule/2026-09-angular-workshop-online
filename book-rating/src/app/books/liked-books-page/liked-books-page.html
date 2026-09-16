@@ -1,0 +1,11 @@
+<h3>Lieblingsbücher</h3>
+<ul>
+  @for (book of store.likedBooks(); track book.isbn) {
+    <li>
+      <a [routerLink]="['/books', book.isbn]">{{ book.title }}</a>
+    </li>
+  } @empty {
+    <li>Keine Lieblingsbücher vorhanden.</li>
+  }
+</ul>
+<button type="button" class="btn btn-red" (click)="store.clearLikedBooks()">Zurücksetzen</button>

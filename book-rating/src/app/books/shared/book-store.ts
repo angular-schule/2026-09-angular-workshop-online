@@ -1,11 +1,38 @@
 import { HttpClient, httpResource } from '@angular/common/http';
-import { inject, Service, Signal } from '@angular/core';
+import { computed, effect, inject, Service, signal, Signal } from '@angular/core';
 import { Book } from './book';
+
+const LIKED_BOOKS_KEY = 'liked-books';
 
 @Service()
 export class BookStore {
     #http = inject(HttpClient);
     #apiBaseUrl = 'https://api.angular.schule';
+
+    readonly likedBooks = signal<Book[]>(this.#loadLikedBooks());
+    readonly likedBooksCount = computed(() => this.likedBooks().length);
+
+    constructor() {
+        effect(() => {
+            localStorage.setItem(LIKED_BOOKS_KEY, JSON.stringify(this.likedBooks()));
+        });
+    }
+
+    #loadLikedBooks(): Book[] {
+        const raw = localStorage.getItem(LIKED_BOOKS_KEY);
+        return raw ? JSON.parse(raw) : [];
+    }
+
+    addLikedBook(book: Book) {
+        if (this.likedBooks().some(b => b.isbn === book.isbn)) {
+            return;
+        }
+        this.likedBooks.update(books => [...books, book]);
+    }
+
+    clearLikedBooks() {
+        this.likedBooks.set([]);
+    }
 
     getAll() {
         return this.#http.get<Book[]>(this.#apiBaseUrl + '/books');

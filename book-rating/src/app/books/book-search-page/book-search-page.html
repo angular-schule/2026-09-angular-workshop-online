@@ -1,3 +1,10 @@
 <div class="form-group">
     <input type="search" class="form-control" [formField]="searchForm">
 </div>
+
+<ul>
+    @for (book of results(); track book.isbn) {<li>{{ book.title }} ({{ book.isbn }})</li>}
+    @empty {
+        <li>Keine Ergebnisse!</li>
+    }
+</ul>

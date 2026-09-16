@@ -19,7 +19,7 @@ export const booksRoutes: Routes = [
             { path: ':isbn', component: BookDetailsPage, title: 'Details' },
         ],
         providers: [
-            { provide: BookStore, useClass: BookStoreMock }
+            // { provide: BookStore, useClass: BookStoreMock }
         ]
     }
 ];

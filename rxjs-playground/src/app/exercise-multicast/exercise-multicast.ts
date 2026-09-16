@@ -25,7 +25,7 @@ export class ExerciseMulticast implements OnDestroy {
 
     // this.measureValues$ = this.#mvs.getValues().pipe(share());
 
-    this.measureValues$ = new ReplaySubject(5);
+    this.measureValues$ = new BehaviorSubject(0);
     this.#mvs.getValues().subscribe(this.measureValues$);
 
     /**************!!**************/

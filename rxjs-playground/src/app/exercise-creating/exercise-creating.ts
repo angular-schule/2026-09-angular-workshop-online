@@ -31,6 +31,12 @@ export class ExerciseCreating {
 
     /******************************/
 
+    // from: Promise => Observable
+    // firstValueFrom/lastValueFrom: Observable => Promise
+
+    // toSignal: Observable => Signal
+    // toObservable: Signal => Observable
+
     // of('Leipzig', 'Stuttgart', 'Köln', 'Kiel')
     // interval(1000)         // ---0---1---2---3---4---5 ...
     // timer(3000)            // ---------0|
@@ -63,9 +69,20 @@ export class ExerciseCreating {
       sub.next(10);
       sub.next(20);
 
-      setTimeout(() => sub.next(100), 2000);
-      setTimeout(() => sub.next(200), 4000);
-      setTimeout(() => sub.complete(), 5000);
+      const timer1 = setTimeout(() => sub.next(100), 2000);
+      const timer2 = setTimeout(() => {
+        console.log('4 Sekunden');
+        sub.next(200)
+      }, 4000);
+      const timer3 = setTimeout(() => sub.complete(), 5000);
+
+      // Teardown Logic
+      return () => {
+        console.log('TEARDOWN');
+        clearTimeout(timer1);
+        clearTimeout(timer2);
+        clearTimeout(timer3);
+      }
     }
 
     // Observer: Sammlung von Callbacks, hört zu
@@ -77,8 +94,13 @@ export class ExerciseCreating {
 
     // producer(obs);
     // Observable: Schnittstelle zwischen Producer und Observer
-    const myObs$ = new Observable(producer);
-    // myObs$.subscribe(obs);
+    /*const myObs$ = new Observable(producer);
+    const sub = myObs$.subscribe(obs);
+
+    setTimeout(() => {
+      console.log('UNSUBSCRIBE');
+      sub.unsubscribe()
+    }, 3000);*/
 
 
     const myObs2$ = new Observable<string>(sub => {

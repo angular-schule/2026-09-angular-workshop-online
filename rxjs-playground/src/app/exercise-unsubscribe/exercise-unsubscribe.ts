@@ -25,7 +25,6 @@ export class ExerciseUnsubscribe {
   constructor() {
     const interval$ = timer(0, 1000);
 
-
     /*const destroy$ = new Observable<void>(sub => {
       this.#dref.onDestroy(() => sub.next())
     });*/

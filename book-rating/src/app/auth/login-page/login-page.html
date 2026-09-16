@@ -1,0 +1,22 @@
+<h2>Login</h2>
+
+<form [formRoot]="passwordForm">
+  <div class="form-group">
+    <label for="passwordInput">Password</label>
+    <input
+      type="password"
+      id="passwordInput"
+      class="form-control"
+      [formField]="passwordForm"
+      autocomplete="current-password"
+    />
+  </div>
+
+  @if (loginError()) {
+    <div class="alert alert-danger" role="alert">
+      Wrong password. Please try again.
+    </div>
+  }
+
+  <button type="submit" class="btn btn-green">Login</button>
+</form>

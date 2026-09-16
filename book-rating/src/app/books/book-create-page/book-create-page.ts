@@ -1,11 +1,20 @@
 import { Component, inject, signal } from '@angular/core';
 import { Book } from '../shared/book';
-import { applyEach, form, FormField, FormRoot, max, maxLength, min, minLength, pattern, provideSignalFormsConfig, required } from '@angular/forms/signals';
+import { apply, applyEach, applyWhen, form, FormField, FormRoot, max, maxLength, min, minLength, pattern, provideSignalFormsConfig, required, schema, validate, validateTree } from '@angular/forms/signals';
 import { JsonPipe } from '@angular/common';
 import { BookStore } from '../shared/book-store';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+
+
+const isbnSchema = schema<string>(isbnPath => {
+  required(isbnPath, { message: 'Die ISBN muss angegeben werden.' });
+  pattern(isbnPath, /^\d+$/, { message: 'Die ISBN darf nur aus Zahlen bestehen.' });
+  minLength(isbnPath, 10, { message: 'Die ISBN muss mindestens 10 Zeichen besitzen.' });
+  maxLength(isbnPath, 13, { message: 'Die ISBN darf maximal 13 Zeichen besitzen.' });
+});
+
 
 @Component({
   imports: [FormField, JsonPipe, FormRoot],
@@ -36,10 +45,41 @@ export class BookCreatePage {
   protected readonly bookForm = form(
     this.bookFormData,
     path => {
-      required(path.isbn, { message: 'Die ISBN muss angegeben werden.' });
-      pattern(path.isbn, /^\d+$/, { message: 'Die ISBN darf nur aus Zahlen bestehen.' });
-      minLength(path.isbn, 10, { message: 'Die ISBN muss mindestens 10 Zeichen besitzen.' });
-      maxLength(path.isbn, 13, { message: 'Die ISBN darf maximal 13 Zeichen besitzen.' });
+      apply(path.isbn, isbnSchema);
+
+      // Konditionale Validierung
+      applyWhen(
+        path.description,
+        (ctx) => {
+          return ctx.valueOf(path.title) !== ''
+        },
+        (descPath) => {
+          required(descPath);
+        }
+      );
+
+      validate(path.isbn, ctx => {
+        if (!ctx.value().startsWith('978')) {
+          return {
+            kind: 'isbnPrefix',
+            message: 'ISBN muss mit 978 beginnen.'
+          }
+        } else {
+          return undefined;
+        }
+      })
+
+      validateTree(path, ctx => {
+        if (ctx.fieldTree.title().value().startsWith('Angular')) {
+          return {
+            kind: 'foo',
+            message: 'Titel startet mit Angular',
+            fieldTree: ctx.fieldTree.isbn,
+          }
+        } else {
+          return undefined;
+        }
+      })
       
       required(path.title, { message: 'Titel muss angegeben werden.' });
       

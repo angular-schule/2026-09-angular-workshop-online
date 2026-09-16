@@ -5,6 +5,8 @@ import { BookRatingHelper } from '../shared/book-rating-helper';
 import { BookStore } from '../shared/book-store';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import { interval, map, tap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   imports: [BookCard, DatePipe],
@@ -18,12 +20,14 @@ export class DashboardPage {
 
   protected readonly books = this.#store.getAllResource();
 
-  protected readonly currentTimestamp = signal(Date.now());
-
-  constructor() {
-    const interval = setInterval(() => this.currentTimestamp.set(Date.now()), 1000);
-    inject(DestroyRef).onDestroy(() => clearInterval(interval));
-  }
+  protected readonly currentTimestamp = toSignal(
+    // ---0---1---2---3---4 ...
+    interval(1000).pipe(
+      map(() => Date.now()),
+      tap(e => console.log(e))
+    ),
+    { initialValue: Date.now() }
+  );
 
   doRateUp(book: Book) {
     const ratedBook = this.#ratingHelper.rateUp(book);

@@ -4,6 +4,8 @@ import { BookDetailsPage } from "./book-details-page/book-details-page";
 import { BookCreatePage } from "./book-create-page/book-create-page";
 import { BookSearchPage } from "./book-search-page/book-search-page";
 import { BooksEntryPage } from "./books-entry-page/books-entry-page";
+import { BookStoreMock } from "./shared/book-store-mock";
+import { BookStore } from "./shared/book-store";
 
 export const booksRoutes: Routes = [
     {
@@ -15,6 +17,9 @@ export const booksRoutes: Routes = [
             { path: 'create', component: BookCreatePage, title: 'Erstellen' },
             { path: 'search', component: BookSearchPage, title: 'Suche' },
             { path: ':isbn', component: BookDetailsPage, title: 'Details' },
+        ],
+        providers: [
+            { provide: BookStore, useClass: BookStoreMock }
         ]
     }
 ];
